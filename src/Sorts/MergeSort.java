@@ -14,7 +14,6 @@ public class MergeSort extends Sort{
     }
 
     private void doMergeSort(int lowerIndex, int higherIndex) {
-        numberOfActions++;
         if (lowerIndex < higherIndex) {
             int middle = lowerIndex + (higherIndex - lowerIndex) / 2;
             // Below step sorts the left side of the array
@@ -36,9 +35,11 @@ public class MergeSort extends Sort{
         int k = lowerIndex;
         while (i <= middle && j <= higherIndex) {
             if (helpArray[i] <= helpArray[j]) {
+                numberOfActions++;
                 mainArray[k] = helpArray[i];
                 i++;
             } else {
+                numberOfActions++;
                 mainArray[k] = helpArray[j];
                 j++;
             }

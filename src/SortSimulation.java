@@ -2,10 +2,10 @@ import java.io.IOException;
 
 public class SortSimulation {
     public static void main(String[] args) throws IOException{
-        int [][]arrayOfArrays = new int[3][1000000];
+        int [][]arrayOfArrays = new int[3][10000000];
         for(int i=0;i<3;i++){
-            for(int j = 0;j<1000000;j++){
-                arrayOfArrays[i][j] = (int)(Math.random() * 1000000 - 500000);
+            for(int j = 0;j<10000000;j++){
+                arrayOfArrays[i][j] = (int)(Math.random() * 10000000 - 5000000);
             }
         }
 
