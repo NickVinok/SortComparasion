@@ -61,6 +61,7 @@ public class QuickSort extends Sort {
         catch(IOException exc){
             System.out.println(exc);
         }
+
     }
 }
 
