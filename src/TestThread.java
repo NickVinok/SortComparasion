@@ -7,10 +7,16 @@ import java.util.Date;
 public class TestThread implements Runnable{
     private Thread thread;
     private int[] array;
+    private ActionAndTime actionAndTime;
 
-    TestThread(String name, int[] arrayToSort){
+
+    TestThread(String name,int arraySize, ActionAndTime actionAndTime){
         thread = new Thread(this,name);
-        array = arrayToSort;
+        this.actionAndTime = actionAndTime;
+        array = new int[arraySize];
+        for(int i =0;i < arraySize;i++){
+            array[i] = (int)(Math.random()*1000000) - 500000;
+        }
         thread.start();
     }
 
@@ -30,10 +36,9 @@ public class TestThread implements Runnable{
                 bs.sort(array);
                 //Засекает время после сортировки
                 Date dateAfter = new Date();
-
-                System.out.println("Массив " + thread.getName() + " сортировался " + (double) (dateAfter.getTime()
-                        - dateBefore.getTime()) / 1000 + " секунд");
-                System.out.println("Было соверщенно " + bs.getNumberOfActions() + " Действий");
+                actionAndTime.setTimeForSort(String.valueOf((double) (dateAfter.getTime() -
+                        dateBefore.getTime()) / 1000));
+                actionAndTime.setNumberOfActions(String.valueOf(bs.getNumberOfActions()));
                 break;
             }
             //Сортировка слиянием
@@ -47,9 +52,9 @@ public class TestThread implements Runnable{
                 ms.printMasToFile();
                 Date dateAfter = new Date();
 
-                System.out.println("Массив " + thread.getName() + " сортировался " + (double) (dateAfter.getTime()
-                        - dateBefore.getTime()) / 1000 + " секунд");
-                System.out.println("Было соверщенно " + ms.getNumberOfActions() + " Действий");
+                actionAndTime.setTimeForSort(String.valueOf((double) (dateAfter.getTime() -
+                        dateBefore.getTime()) / 1000));
+                actionAndTime.setNumberOfActions(String.valueOf(ms.getNumberOfActions()));
                 break;
             }
             //"Быстрая" сортировка
@@ -63,11 +68,15 @@ public class TestThread implements Runnable{
                 qs.printMasToFile();
                 Date dateAfter = new Date();
 
-                System.out.println("Массив " + thread.getName() + " сортировался " + (double)(dateAfter.getTime()
-                        - dateBefore.getTime())/1000 + " секунд");
-                System.out.println("Было соверщенно " + qs.getNumberOfActions() + " Действий");
+                actionAndTime.setTimeForSort(String.valueOf((double) (dateAfter.getTime() -
+                        dateBefore.getTime()) / 1000));
+                actionAndTime.setNumberOfActions(String.valueOf(qs.getNumberOfActions()));
                 break;
             }
         }
+    }
+
+    public Thread getThread() {
+        return thread;
     }
 }
