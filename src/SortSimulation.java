@@ -5,10 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -17,7 +14,7 @@ import java.io.IOException;
 
 public class SortSimulation extends Application {
     private int[][] arrayOfArrays;
-    private int arraySize;
+    private int arraySize = -1;
     private TestThread[] arrayOfThreads = new TestThread[3];
     private ActionAndTime[] arrayOfComparisionElements = new ActionAndTime[3];
 
@@ -37,6 +34,32 @@ public class SortSimulation extends Application {
         rootNode.getColumnConstraints().add(new ColumnConstraints(200)); // column 0 is 100 wide
         primaryStage.setTitle("Сравнение сортировок");
         Scene scene = new Scene(rootNode, 400, 300);
+
+
+        Alert typeSelectionAlert = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
+        typeSelectionAlert.setTitle("Не выбран тип сортировки");
+        typeSelectionAlert.setHeaderText("Пожалуйста, выберите тип сортировки");
+        typeSelectionAlert.setContentText("Должна быть выбрана хотя бы одна сортировка");
+
+        Alert noArraySizeInputAlert = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
+        noArraySizeInputAlert.setTitle("Не введён размер массива");
+        noArraySizeInputAlert.setHeaderText("Пожалуйста, введите размер массива");
+        noArraySizeInputAlert.setContentText("У массива должен быть размер, который должен быть представлен в виде целого положительного числа");
+
+        Alert wrongArraySizeInputAlert = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
+        wrongArraySizeInputAlert.setTitle("Введено не число");
+        wrongArraySizeInputAlert.setHeaderText("Пожалуйста, введите положительное число");
+        wrongArraySizeInputAlert.setContentText("Размер массива должен быть представлен в виде целого положительного числа");
+
+        Alert negativeArraySizeInputAlert = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
+        negativeArraySizeInputAlert.setTitle("Введено отрицательное число");
+        negativeArraySizeInputAlert.setHeaderText("Пожалуйста, введите положительное число");
+        negativeArraySizeInputAlert.setContentText("Размер массива не может быть отрицательным");
+
+        Alert bubbleSortArraySize = new Alert(Alert.AlertType.INFORMATION, "", ButtonType.OK);
+        bubbleSortArraySize.setTitle("Внимание");
+        bubbleSortArraySize.setHeaderText("Пузырьковая сортировка будет работать с массивом в 100,000 элементов");
+        bubbleSortArraySize.setContentText("Пузырьковая сортировка не может эффективно работать с массивами, в которых больше 100,000 элементов");
 
 
         Label sortHint = new Label("Выберите тип сортировки: ");
@@ -84,22 +107,53 @@ public class SortSimulation extends Application {
 
         startSorting.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                arraySize = Integer.parseInt(numberOfElementsInput.getText());
                 String[] tmpTypes = chosenTypesOfSortsPart2.getText().split("\t");
-                for (int i = 0; i < tmpTypes.length; i++) {
-                    arrayOfComparisionElements[i] = new ActionAndTime();
-                    arrayOfThreads[i] = new TestThread(tmpTypes[i], arraySize, arrayOfComparisionElements[i]);
-                }
-                try {
-                    for (int i = 0; i < tmpTypes.length * 2; i += 2) {
-                        arrayOfThreads[i / 2].getThread().join();
-                        comparisionResults[i].setText(arrayOfThreads[i / 2].getThread().getName() +
-                                " Время: " + arrayOfComparisionElements[i / 2].getTimeForSort());
-                        comparisionResults[i + 1].setText("Кол-во действий: " +
-                                arrayOfComparisionElements[i / 2].getNumberOfActions());
+
+                if (tmpTypes[0].equals("----")) {
+                    typeSelectionAlert.showAndWait();
+                } else {
+
+                    try {
+                        arraySize = Integer.parseInt(numberOfElementsInput.getText());
+                        if (arraySize < 1) {
+                            negativeArraySizeInputAlert.showAndWait();
+                        }
+                    } catch (NumberFormatException exc) {
+                        if (numberOfElementsInput.getText().equals("")) {
+                            noArraySizeInputAlert.showAndWait();
+                        } else {
+                            wrongArraySizeInputAlert.showAndWait();
+                        }
                     }
-                } catch (InterruptedException exc) {
-                    System.out.println(exc);
+
+                    if (arraySize > 0) {
+                        for (int i = 0; i < tmpTypes.length; i++) {
+                            arrayOfComparisionElements[i] = new ActionAndTime();
+                            if (tmpTypes[i].equals("Bubble") && arraySize > 100000) {
+                                bubbleSortArraySize.showAndWait();
+                                bubbleSortArraySize.getOnCloseRequest();
+                                arrayOfThreads[i] = new TestThread(tmpTypes[i], 100000, arrayOfComparisionElements[i]);
+                            } else {
+                                arrayOfThreads[i] = new TestThread(tmpTypes[i], arraySize, arrayOfComparisionElements[i]);
+                            }
+                        }
+
+                        for (int i=0; i < tmpTypes.length * 2; i += 2) {
+                            try {
+                                arrayOfThreads[i/2].getThread().join(1000);
+                                if (!arrayOfThreads[i / 2].getThread().isAlive()) {
+                                    comparisionResults[i].setText(arrayOfThreads[i / 2].getThread().getName() +
+                                            " Время: " + arrayOfComparisionElements[i / 2].getTimeForSort());
+                                    comparisionResults[i + 1].setText("Кол-во действий: " +
+                                            arrayOfComparisionElements[i / 2].getNumberOfActions());
+                                } else {
+                                    comparisionResults[i].setText("Производится сортировка");
+                                }
+                            } catch(InterruptedException exc){
+                                System.out.println(exc);
+                            }
+                        }
+                    }
                 }
             }
         });

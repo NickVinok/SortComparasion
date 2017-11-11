@@ -23,6 +23,7 @@ public class TestThread implements Runnable{
     public void run(){
         //Получает имя потока и в зависимости от него запускает
         //Нужную сортировку
+
         switch(thread.getName()){
             //Сортировка пузырьком
             case "Bubble": {

@@ -8,6 +8,7 @@ public class MergeSort extends Sort{
     private int[] helpArray;
 
     public void sort(int[] array) {
+
         mainArray = array;
         helpArray = new int[array.length];
         doMergeSort(0, array.length - 1);
