@@ -140,7 +140,7 @@ public class SortSimulation extends Application {
 
                         for (int i=0; i < tmpTypes.length * 2; i += 2) {
                             try {
-                                arrayOfThreads[i/2].getThread().join(1000);
+                                arrayOfThreads[i/2].getThread().join();
                                 if (!arrayOfThreads[i / 2].getThread().isAlive()) {
                                     comparisionResults[i].setText(arrayOfThreads[i / 2].getThread().getName() +
                                             " Время: " + arrayOfComparisionElements[i / 2].getTimeForSort());
