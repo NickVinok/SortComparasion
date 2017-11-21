@@ -10,11 +10,10 @@ public class QuickSort extends Sort {
         qSort(0,array.length-1);
     }
 
-    //Принцип быстрой сортировки
-    //Заключается в разделении массива на 2 части
+
     private void qSort(int begin, int end){
         int i = begin, j = end;
-        // Get the pivot element from the middle of the list
+
         int pivot = array[begin + (end-begin)/2];
 
 
@@ -37,7 +36,7 @@ public class QuickSort extends Sort {
                 j--;
             }
         }
-        // Recursion
+
         if (begin < j)
             qSort(begin, j);
         if (i < end)

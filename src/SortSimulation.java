@@ -64,10 +64,12 @@ public class SortSimulation extends Application {
 
         Label sortHint = new Label("Выберите тип сортировки: ");
         ChoiceBox<String> sortChoiceBox = new ChoiceBox<>();
+
         Label chosenTypesOfSorts = new Label("Выбранные типы сортировки");
         Label chosenTypesOfSortsPart2 = new Label("----\t----\t----");
         Label numberOfElementsText = new Label("Кол-во элементов в массиве: ");
         TextField numberOfElementsInput = new TextField();
+        numberOfElementsInput.setPromptText("Не больше одного миллиона");
         Button startSorting = new Button("StartTest");
         Label[] comparisionResults = new Label[6];
         for (int i = 0; i < 6; i++) {
@@ -127,6 +129,8 @@ public class SortSimulation extends Application {
                     }
 
                     if (arraySize > 0) {
+                        comparisionResults[0].setText("Подождите, идёт сортировка");
+
                         for (int i = 0; i < tmpTypes.length; i++) {
                             arrayOfComparisionElements[i] = new ActionAndTime();
                             if (tmpTypes[i].equals("Bubble") && arraySize > 100000) {
@@ -143,7 +147,7 @@ public class SortSimulation extends Application {
                                 arrayOfThreads[i/2].getThread().join();
                                 if (!arrayOfThreads[i / 2].getThread().isAlive()) {
                                     comparisionResults[i].setText(arrayOfThreads[i / 2].getThread().getName() +
-                                            " Время: " + arrayOfComparisionElements[i / 2].getTimeForSort());
+                                            " Время: " + arrayOfComparisionElements[i / 2].getTimeForSort()+ " сек");
                                     comparisionResults[i + 1].setText("Кол-во действий: " +
                                             arrayOfComparisionElements[i / 2].getNumberOfActions());
                                 } else {
