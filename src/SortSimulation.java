@@ -76,7 +76,7 @@ public class SortSimulation extends Application {
             comparisionResults[i] = new Label("");
         }
 
-        sortChoiceBox.getItems().addAll("Bubble sort", "Merge sort", "Quick sort", "Bubble2 sort");
+        sortChoiceBox.getItems().addAll("Bubble sort", "Merge sort", "Quick sort", "Bubble2 sort", "Selection sort");
         sortChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue<? extends String> v, String nv, String ov) {
                 String[] tmpTypes;

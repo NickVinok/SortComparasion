@@ -1,7 +1,4 @@
-import Sorts.BubbleSort;
-import Sorts.BubbleSort2;
-import Sorts.QuickSort;
-import Sorts.MergeSort;
+import Sorts.*;
 
 import java.util.Date;
 
@@ -52,6 +49,20 @@ public class TestThread implements Runnable{
                 actionAndTime.setTimeForSort(String.valueOf((double) (dateAfter.getTime() -
                         dateBefore.getTime()) / 1000));
                 actionAndTime.setNumberOfActions(String.valueOf(bs2.getNumberOfActions()));
+                break;
+            }
+            case "Selection": {
+                SelectionSort ss = new SelectionSort();
+                //Засекает время начала сортировки
+                //Вообще стоит поискать код для нормального таймера
+                //Ибо это похоже на ебанный костыль
+                Date dateBefore = new Date();
+                ss.sort(array);
+                //Засекает время после сортировки
+                Date dateAfter = new Date();
+                actionAndTime.setTimeForSort(String.valueOf((double) (dateAfter.getTime() -
+                        dateBefore.getTime()) / 1000));
+                actionAndTime.setNumberOfActions(String.valueOf(ss.getNumberOfActions()));
                 break;
             }
             //Сортировка слиянием
