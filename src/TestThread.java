@@ -1,4 +1,5 @@
 import Sorts.BubbleSort;
+import Sorts.BubbleSort2;
 import Sorts.QuickSort;
 import Sorts.MergeSort;
 
@@ -27,8 +28,6 @@ public class TestThread implements Runnable{
         switch(thread.getName()){
             //Сортировка пузырьком
             case "Bubble": {
-                System.out.println("Поток " + thread.getName() + " запущен");
-
                 BubbleSort bs = new BubbleSort();
                 //Засекает время начала сортировки
                 //Вообще стоит поискать код для нормального таймера
@@ -42,15 +41,25 @@ public class TestThread implements Runnable{
                 actionAndTime.setNumberOfActions(String.valueOf(bs.getNumberOfActions()));
                 break;
             }
+            //Вторая вариация сортировки пузырьком
+            case "Bubble2": {
+                BubbleSort2 bs2 = new BubbleSort2();
+                Date dateBefore = new Date();
+                bs2.sort(array);
+                System.out.println();
+                Date dateAfter = new Date();
+
+                actionAndTime.setTimeForSort(String.valueOf((double) (dateAfter.getTime() -
+                        dateBefore.getTime()) / 1000));
+                actionAndTime.setNumberOfActions(String.valueOf(bs2.getNumberOfActions()));
+                break;
+            }
             //Сортировка слиянием
             case "Merge": {
-                System.out.println("Поток " + thread.getName() + " запущен");
-
                 MergeSort ms = new MergeSort();
                 Date dateBefore = new Date();
                 ms.sort(array);
                 System.out.println();
-                ms.printMasToFile();
                 Date dateAfter = new Date();
 
                 actionAndTime.setTimeForSort(String.valueOf((double) (dateAfter.getTime() -
@@ -60,13 +69,10 @@ public class TestThread implements Runnable{
             }
             //"Быстрая" сортировка
             case "Quick":{
-                System.out.println("Поток " + thread.getName() + " запущен");
-
                 QuickSort qs = new QuickSort();
                 Date dateBefore = new Date();
                 qs.sort(array);
                 System.out.println();
-                qs.printMasToFile();
                 Date dateAfter = new Date();
 
                 actionAndTime.setTimeForSort(String.valueOf((double) (dateAfter.getTime() -

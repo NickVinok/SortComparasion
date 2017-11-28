@@ -29,7 +29,7 @@ public class QuickSort extends Sort {
             }
 
             if (i <= j) {
-                numberOfActions++;
+                numberOfActions+=3;
                 int tmp = array[i];
                 array[i] = array[j];
                 array[j] = tmp;
@@ -48,20 +48,5 @@ public class QuickSort extends Sort {
         return numberOfActions;
     }
 
-    public void printMasToFile(){
-        try(FileWriter fw = new FileWriter("test1.txt")){
-            for(int i = 0; i < array.length;i++){
-                if(i%20 == 0){
-                    fw.write('\n');
-                }
-                fw.write(Integer.toString(array[i]));
-                fw.write(' ');
-            }
-        }
-        catch(IOException exc){
-            System.out.println(exc);
-        }
-
-    }
 }
 

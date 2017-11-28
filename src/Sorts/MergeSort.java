@@ -29,6 +29,7 @@ public class MergeSort extends Sort{
     private void mergeParts(int lowerIndex, int middle, int higherIndex) {
 
         for (int i = lowerIndex; i <= higherIndex; i++) {
+            numberOfActions++;
             helpArray[i] = mainArray[i];
         }
         int i = lowerIndex;
@@ -47,6 +48,7 @@ public class MergeSort extends Sort{
             k++;
         }
         while (i <= middle) {
+            numberOfActions++;
             mainArray[k] = helpArray[i];
             k++;
             i++;
@@ -54,19 +56,4 @@ public class MergeSort extends Sort{
     }
 
     public long getNumberOfActions() { return numberOfActions; }
-
-    public void printMasToFile(){
-        try(FileWriter fw = new FileWriter("test2.txt")){
-            for(int i = 0; i < mainArray.length;i++){
-                if(i%20 == 0){
-                    fw.write('\n');
-                }
-                fw.write(Integer.toString(mainArray[i]));
-                fw.write(' ');
-            }
-        }
-        catch(IOException exc){
-            System.out.println(exc);
-        }
-    }
 }
